@@ -13,7 +13,7 @@ import java.util.Optional;
 
 
 @Service
-public class StudentRepoImpl {
+public class StudentService {
     @Autowired
     private StudentRepository studentRepo;
 
