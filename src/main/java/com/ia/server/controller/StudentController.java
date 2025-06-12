@@ -22,7 +22,7 @@ public class StudentController {
 
     @PostMapping("/updateStudent")
     public void updateStudentInfo(HttpServletRequest request, @RequestBody Student student) {
-        studentRepoImpl.saveOrUpdateUser(request, student);
+        studentRepoImpl.saveOrUpdateStudent(request, student);
     }
 
 }

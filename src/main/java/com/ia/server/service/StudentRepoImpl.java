@@ -24,7 +24,7 @@ public class StudentRepoImpl {
         return studentRepo.findById(id);
     }
 
-    public Student saveOrUpdateUser(HttpServletRequest request, Student student) {
+    public Student saveOrUpdateStudent(HttpServletRequest request, Student student) {
         String ipAddress = request.getHeader("X-Forwarded-For");
 
         if (ipAddress != null && !ipAddress.isEmpty()) {
