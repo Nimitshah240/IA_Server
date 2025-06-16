@@ -15,13 +15,13 @@ public class Question {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Column(unique = true)
-    private Long id;
+    private String id;
 
     @Column
-    private Long studentId;
+    private String studentId;
 
     @Column
-    private Long examId;
+    private String examId;
 
     @Column
     private String questionType;

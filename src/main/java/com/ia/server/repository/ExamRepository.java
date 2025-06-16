@@ -1,5 +1,7 @@
 package com.ia.server.repository;
 
+import com.ia.server.DTO.ExamQuestionDto;
+import com.ia.server.DTO.InsertExamQuestionDTO;
 import com.ia.server.model.Exam;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -9,36 +11,50 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface ExamRepository extends JpaRepository<Exam, Long> {
+public interface ExamRepository extends JpaRepository<Exam, String> {
 
     @Query(value = """
             SELECT 
-                exam.id AS exam_id,
-                exam.user_id,
-                exam.exam_name,
-                exam.exam_date,
-                exam.created_date AS exam_created_date,
-                exam.updated_date AS exam_updated_date,
-                exam.module AS exam_module,
+                e.id AS exam_id,
+                e.exam_name,
+                e.exam_date,
+                e.module,
+                e.band,
+                e.created_date AS exam_created_date,
+                e.updated_date AS exam_updated_date,
             
-                question.id AS question_id,
-                question.student_id,
-                question.exam_id AS question_exam_id,
-                question.question_type,
-                question.total,
-                question.correct,
-                question.incorrect,
-                question.miss,
-                question.section,
-                question.created_date AS question_created_date,
-                question.updated_date AS question_updated_date
+                q.id,
+                q.student_id,
+                q.exam_id,
+                q.question_type,
+                q.total,
+                q.correct,
+                q.incorrect,
+                q.miss,
+                q.section,
+                q.created_date AS question_created_date,
+                q.updated_date AS question_updated_date
             
-            FROM exam
-            LEFT JOIN question ON question.exam_id = exam.id
-            WHERE exam.user_id = :userId
-              AND exam.module IN (:modules)
-            ORDER BY exam.exam_date ASC
+            FROM exam e
+            LEFT JOIN question q ON q.exam_id = exam_id
+            WHERE e.user_id = :userId
+            AND e.module IN (:modules)
+            ORDER BY e.exam_date ASC
             """, nativeQuery = true)
-    public List<Exam> getExamData(@Param("userId") Long userId,
-                                  @Param("modules") List<String> modules);
+    List<ExamQuestionDto> getExamData(@Param("userId") String userId, @Param("modules") List<String> modules);
+
+
+    @Query(value = """
+            INSERT INTO exam (id, user_id, exam_name, exam_date, module, band, created_date, updated_date)
+            VALUES (:#{#dto.examId}, :#{#dto.userId}, :#{#dto.examName}, :#{#dto.examDate},
+                    :#{#dto.module}, :#{#dto.band}, :#{#dto.createdDate}, :#{#dto.updatedDate})
+            ON DUPLICATE KEY UPDATE
+                user_id = VALUES(user_id),
+                exam_name = VALUES(exam_name),
+                exam_date = VALUES(exam_date),
+                module = VALUES(module),
+                band = VALUES(band),
+                updated_date = VALUES(updated_date)
+            """, nativeQuery = true)
+    void insertOrUpdateExam(InsertExamQuestionDTO dto);
 }

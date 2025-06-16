@@ -16,10 +16,10 @@ public class Exam {
     @Id
     @Column(unique = true)
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    private Long id;
+    private String id;
 
     @Column
-    private Long userId;
+    private String studentId;
 
     @Column
     private String examName;
@@ -27,14 +27,17 @@ public class Exam {
     @Column
     private Date examDate;
 
+    @Column
+    private String module;
+
+    @Column
+    private Double band;
+
     @Column(updatable = false)
     private Date createdDate;
 
     @Column
     private Date updatedDate;
-
-    @Column
-    private String module;
 
     @PrePersist
     protected void onCreate() {

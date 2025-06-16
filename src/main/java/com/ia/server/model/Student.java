@@ -15,8 +15,8 @@ public class Student {
 
     @Id
     @Column(unique = true)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    private Long id;
+//    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    private String id;
 
     @Column
     @Nonnull
@@ -35,11 +35,11 @@ public class Student {
     @Column
     private String ip;
 
-    @Column
+    @Column(updatable = false)
     private Date loginDate;
 
     @Column
-    private Long institutionId;
+    private String institutionId;
 
     @Column
     private Boolean subscribed;
@@ -55,5 +55,14 @@ public class Student {
 
     @Transient
     private Boolean newStudent;
+
+    @Column
+    private Boolean privacy;
+
+
+    @PrePersist
+    protected void onCreate() {
+        this.loginDate = new Date();
+    }
 
 }
