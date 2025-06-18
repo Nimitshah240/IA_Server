@@ -5,6 +5,8 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Entity
@@ -15,7 +17,6 @@ public class Student {
 
     @Id
     @Column(unique = true)
-//    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private String id;
 
     @Column
@@ -36,7 +37,7 @@ public class Student {
     private String ip;
 
     @Column(updatable = false)
-    private Date loginDate;
+    private LocalDateTime loginDate;
 
     @Column
     private String institutionId;
@@ -62,7 +63,7 @@ public class Student {
 
     @PrePersist
     protected void onCreate() {
-        this.loginDate = new Date();
+        this.loginDate = LocalDateTime.now();
     }
 
 }

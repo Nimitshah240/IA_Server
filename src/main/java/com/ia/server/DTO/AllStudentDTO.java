@@ -25,7 +25,7 @@ public class AllStudentDTO {
 
     private Date loginDate;
 
-    private Long institutionId;
+    private String institutionId;
 
     private Boolean subscribed;
 

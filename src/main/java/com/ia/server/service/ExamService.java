@@ -3,6 +3,7 @@ package com.ia.server.service;
 import com.ia.server.DTO.ExamQuestionDto;
 import com.ia.server.model.Exam;
 import com.ia.server.repository.ExamRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,7 +18,7 @@ public class ExamService {
     @Autowired
     private ExamRepository examRepository;
 
-    public List<ExamQuestionDto> getExamData(String user_id, String module) {
+    public List<ExamQuestionDto> getExamData(String studentId, String module) {
         List<String> moduleList = new ArrayList<String>();
         if (module == null) {
             moduleList.add("Reading");
@@ -28,12 +29,26 @@ public class ExamService {
         for (String s : moduleList) {
             System.out.println(s);
         }
-        return examRepository.getExamData(user_id, moduleList);
+        return examRepository.getExamData(studentId, moduleList);
     }
 
-    public String deleteExam(String exam_id) {
+    public Long deleteExam(Long exam_id) {
         examRepository.deleteById(exam_id);
         return exam_id;
+    }
+
+    @Transactional
+    public Exam insertOrUpdateExam(ExamQuestionDto examQuestionDto) {
+        Exam e = new Exam();
+        e.setId(examQuestionDto.getExamId());
+        e.setExamDate(examQuestionDto.getExamDate());
+        e.setExamName(examQuestionDto.getExamName());
+        e.setBand(examQuestionDto.getBand());
+        e.setModule(examQuestionDto.getModule());
+        e.setCreatedDate(examQuestionDto.getExamCreatedDate());
+        e.setUpdatedDate(examQuestionDto.getExamUpdatedDate());
+        e.setStudentId(examQuestionDto.getStudentId());
+       return examRepository.save(e);
     }
 
 }

@@ -12,6 +12,7 @@ import com.ia.server.service.StudentService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -36,7 +37,6 @@ public class StudentController {
     @Transactional
     public List<Student> getStudent(@RequestParam String user_id) {
         Optional<Student> optStudent = studentService.findOneById(user_id);
-        optStudent.get();
         return List.of(optStudent.get());
     }
 
@@ -60,24 +60,26 @@ public class StudentController {
 
     @DeleteMapping("/deleteQuestion")
     @Transactional
-    public String deleteQuestion(@RequestParam String question_id) {
+    public Long deleteQuestion(@RequestParam Long question_id) {
         questionService.deleteQuestion(question_id);
         return question_id;
     }
 
     @DeleteMapping("/deleteExam")
     @Transactional
-    public String deleteExam(@RequestParam String exam_id) {
+    public Long deleteExam(@RequestParam Long exam_id) {
         examService.deleteExam(exam_id);
         questionService.deleteByExamId(exam_id);
         return exam_id;
     }
 
     @PostMapping("/insertExam")
-    @Transactional
-    public void insertExam(@RequestParam String exam_id, @RequestBody List<InsertExamQuestionDTO> examQuestionData) {
-        for (InsertExamQuestionDTO e : examQuestionData) {
-            System.out.println(e.getExamModule());
+    @Modifying
+    public void insertExam(@RequestParam Long exam_id, @RequestBody List<ExamQuestionDto> examQuestionData) {
+        Long examId = examService.insertOrUpdateExam(examQuestionData.getFirst()).getId();
+        for (ExamQuestionDto dto : examQuestionData) {
+            dto.setExamId(examId);
+            questionService.insertOrUpdateQuestion(dto);
         }
     }
 

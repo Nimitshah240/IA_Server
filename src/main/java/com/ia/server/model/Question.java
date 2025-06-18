@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Getter
@@ -15,13 +17,13 @@ public class Question {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Column(unique = true)
-    private String id;
+    private Long id;
 
     @Column
     private String studentId;
 
     @Column
-    private String examId;
+    private Long examId;
 
     @Column
     private String questionType;
@@ -42,14 +44,14 @@ public class Question {
     private Integer section;
 
     @Column(updatable = false)
-    private Date createdDate;
+    private LocalDateTime createdDate;
 
     @Column
-    private Date updatedDate;
+    private LocalDateTime updatedDate;
 
     @PrePersist
     protected void onCreate() {
-        this.createdDate = new Date();
-        this.updatedDate = new Date();
+        this.createdDate = LocalDateTime.now();
+        this.updatedDate = LocalDateTime.now();
     }
 }

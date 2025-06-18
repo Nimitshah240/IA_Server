@@ -5,7 +5,11 @@ import lombok.Getter;
 import lombok.Setter;
 import org.springframework.beans.factory.annotation.Value;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.Date;
+import java.util.Locale;
 
 @Getter
 @Setter
@@ -16,7 +20,7 @@ public class Exam {
     @Id
     @Column(unique = true)
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    private String id;
+    private Long id;
 
     @Column
     private String studentId;
@@ -25,7 +29,7 @@ public class Exam {
     private String examName;
 
     @Column
-    private Date examDate;
+    private OffsetDateTime examDate;
 
     @Column
     private String module;
@@ -34,14 +38,14 @@ public class Exam {
     private Double band;
 
     @Column(updatable = false)
-    private Date createdDate;
+    private LocalDateTime  createdDate;
 
     @Column
-    private Date updatedDate;
+    private LocalDateTime  updatedDate;
 
     @PrePersist
     protected void onCreate() {
-        this.createdDate = new Date();
-        this.updatedDate = new Date();
+        this.createdDate = LocalDateTime.now();
+        this.updatedDate =LocalDateTime.now();
     }
 }
