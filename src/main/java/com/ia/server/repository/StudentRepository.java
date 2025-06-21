@@ -34,7 +34,7 @@ public interface StudentRepository extends JpaRepository<Student, String> {
             student.last_name,
             COUNT(CASE WHEN exam.module = 'listening' THEN 1 END) AS listening_count,
             COUNT(CASE WHEN exam.module = 'reading' THEN 1 END) AS reading_count FROM student
-            LEFT JOIN exam ON student.id = exam.user_id GROUP BY student.id
+            LEFT JOIN exam ON student.id = exam.student_id GROUP BY student.id
             """, nativeQuery = true)
     List<AllStudentDTO> getAllStudentData();
 }

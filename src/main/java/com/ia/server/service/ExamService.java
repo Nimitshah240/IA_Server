@@ -7,10 +7,8 @@ import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.lang.classfile.Opcode;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class ExamService {
@@ -19,36 +17,49 @@ public class ExamService {
     private ExamRepository examRepository;
 
     public List<ExamQuestionDto> getExamData(String studentId, String module) {
-        List<String> moduleList = new ArrayList<String>();
-        if (module == null) {
-            moduleList.add("Reading");
-            moduleList.add("Listening");
-        } else {
-            moduleList.add(module);
+        try {
+            List<String> moduleList = new ArrayList<String>();
+            if (module == null) {
+                moduleList.add("Reading");
+                moduleList.add("Listening");
+            } else {
+                moduleList.add(module);
+            }
+            return examRepository.getExamData(studentId, moduleList);
+        } catch (Exception e) {
+            System.out.println("getExamData : " + e);
+            throw new RuntimeException(e);
         }
-        for (String s : moduleList) {
-            System.out.println(s);
-        }
-        return examRepository.getExamData(studentId, moduleList);
+
     }
 
     public Long deleteExam(Long exam_id) {
-        examRepository.deleteById(exam_id);
-        return exam_id;
+        try {
+            examRepository.deleteById(exam_id);
+            return exam_id;
+        } catch (Exception e) {
+            System.out.println("deleteExam : " + e);
+            throw new RuntimeException(e);
+        }
     }
 
     @Transactional
     public Exam insertOrUpdateExam(ExamQuestionDto examQuestionDto) {
-        Exam e = new Exam();
-        e.setId(examQuestionDto.getExamId());
-        e.setExamDate(examQuestionDto.getExamDate());
-        e.setExamName(examQuestionDto.getExamName());
-        e.setBand(examQuestionDto.getBand());
-        e.setModule(examQuestionDto.getModule());
-        e.setCreatedDate(examQuestionDto.getExamCreatedDate());
-        e.setUpdatedDate(examQuestionDto.getExamUpdatedDate());
-        e.setStudentId(examQuestionDto.getStudentId());
-       return examRepository.save(e);
+        try {
+            Exam e = new Exam();
+            e.setId(examQuestionDto.getExamId());
+            e.setExamDate(examQuestionDto.getExamDate());
+            e.setExamName(examQuestionDto.getExamName());
+            e.setBand(examQuestionDto.getBand());
+            e.setModule(examQuestionDto.getModule());
+            e.setCreatedDate(examQuestionDto.getExamCreatedDate());
+            e.setUpdatedDate(examQuestionDto.getExamUpdatedDate());
+            e.setStudentId(examQuestionDto.getStudentId());
+            return examRepository.save(e);
+        } catch (Exception e) {
+            System.out.println("insertOrUpdateExam : " + e);
+            throw new RuntimeException(e);
+        }
     }
 
 }

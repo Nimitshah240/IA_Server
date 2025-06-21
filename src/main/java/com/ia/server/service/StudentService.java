@@ -30,30 +30,45 @@ public class StudentService {
     private RestTemplateBuilder restTemplateBuilder;
 
     public Optional<Student> findOneById(String id) {
-        return studentRepo.findById(id);
+        try {
+            return studentRepo.findById(id);
+        } catch (Exception e) {
+            System.out.println("findOneById : " + e);
+            throw new RuntimeException(e);
+        }
     }
 
     public Student saveOrUpdateStudent(HttpServletRequest request, Student student) {
-        String ipAddress = request.getHeader("X-Forwarded-For");
+        try {
+            String ipAddress = request.getHeader("X-Forwarded-For");
 
-        if (ipAddress != null && !ipAddress.isEmpty()) {
-            student.setIp(ipAddress.split(",")[0]);
-            RestTemplate restTemplate = restTemplateBuilder.build();
-            String url = "https://ipinfo.io/" + student.getIp() + "/json/";
-            Map<String, Object> mapOfIP = restTemplate.getForObject(url, Map.class);
-            student.setLocation(mapOfIP.get("city") + "," + mapOfIP.get("region"));
+            if (ipAddress != null && !ipAddress.isEmpty()) {
+                student.setIp(ipAddress.split(",")[0]);
+                RestTemplate restTemplate = restTemplateBuilder.build();
+                String url = "https://ipinfo.io/" + student.getIp() + "/json/";
+                Map<String, Object> mapOfIP = restTemplate.getForObject(url, Map.class);
+                student.setLocation(mapOfIP.get("city") + "," + mapOfIP.get("region"));
+            }
+
+            return studentRepo.save(student);
+        } catch (Exception e) {
+            System.out.println("saveOrUpdateStudent : " + e);
+            throw new RuntimeException(e);
         }
-
-        return studentRepo.save(student);
     }
 
 
     public ResponseEntity<?> getAllStudentData(String username, String password) {
-
-        if (username.equals("Nimit") && password.equals("Shah")) {
-            return ResponseEntity.ok(studentRepo.getAllStudentData());
-        } else {
-            return ResponseEntity.ok("\"Invalid User\"");
+        try {
+            if (username.equals("Nimit") && password.equals("Shah")) {
+                return ResponseEntity.ok(studentRepo.getAllStudentData());
+            } else {
+                return ResponseEntity.ok("\"Invalid User\"");
+            }
+        } catch (Exception e) {
+            System.out.println("getAllStudentData : " + e);
+            throw new RuntimeException(e);
         }
+
     }
 }

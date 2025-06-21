@@ -1,7 +1,6 @@
 package com.ia.server.repository;
 
 import com.ia.server.DTO.ExamQuestionDto;
-import com.ia.server.DTO.InsertExamQuestionDTO;
 import com.ia.server.model.Exam;
 import jakarta.transaction.Transactional;
 import org.springframework.data.jpa.repository.JpaRepository;

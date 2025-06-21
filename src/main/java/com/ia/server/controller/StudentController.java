@@ -1,11 +1,7 @@
 package com.ia.server.controller;
 
-import com.ia.server.DTO.AllStudentDTO;
 import com.ia.server.DTO.ExamQuestionDto;
-import com.ia.server.DTO.InsertExamQuestionDTO;
-import com.ia.server.model.Exam;
 import com.ia.server.model.Student;
-import com.ia.server.repository.QuestionRepository;
 import com.ia.server.service.ExamService;
 import com.ia.server.service.QuestionService;
 import com.ia.server.service.StudentService;
@@ -60,26 +56,31 @@ public class StudentController {
 
     @DeleteMapping("/deleteQuestion")
     @Transactional
-    public Long deleteQuestion(@RequestParam Long question_id) {
-        questionService.deleteQuestion(question_id);
-        return question_id;
+    public Long deleteQuestion(@RequestParam Long questionId) {
+        questionService.deleteQuestion(questionId);
+        return questionId;
     }
 
     @DeleteMapping("/deleteExam")
     @Transactional
-    public Long deleteExam(@RequestParam Long exam_id) {
-        examService.deleteExam(exam_id);
-        questionService.deleteByExamId(exam_id);
-        return exam_id;
+    public Long deleteExam(@RequestParam Long examId) {
+        examService.deleteExam(examId);
+        questionService.deleteByExamId(examId);
+        return examId;
     }
 
     @PostMapping("/insertExam")
     @Modifying
-    public void insertExam(@RequestParam Long exam_id, @RequestBody List<ExamQuestionDto> examQuestionData) {
-        Long examId = examService.insertOrUpdateExam(examQuestionData.getFirst()).getId();
-        for (ExamQuestionDto dto : examQuestionData) {
-            dto.setExamId(examId);
-            questionService.insertOrUpdateQuestion(dto);
+    public void insertExam(@RequestBody List<ExamQuestionDto> examQuestionData) {
+        try {
+            Long examId = examService.insertOrUpdateExam(examQuestionData.getFirst()).getId();
+            for (ExamQuestionDto dto : examQuestionData) {
+                dto.setExamId(examId);
+                questionService.insertOrUpdateQuestion(dto);
+            }
+        } catch (Exception e) {
+            System.out.println(e);
+            throw new RuntimeException(e);
         }
     }
 
