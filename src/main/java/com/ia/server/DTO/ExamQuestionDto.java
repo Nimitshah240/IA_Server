@@ -19,7 +19,6 @@ import java.time.ZoneOffset;
 //@AllArgsConstructor
 public class ExamQuestionDto {
 
-    private Long examId;
     private String examName;
     private OffsetDateTime examDate;
     private String module;
@@ -28,7 +27,10 @@ public class ExamQuestionDto {
     private LocalDateTime examUpdatedDate;
 
     // Question table fields
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long examId;
     private String studentId;
     private String questionType;
     private int total;
@@ -41,7 +43,6 @@ public class ExamQuestionDto {
 
 
     public ExamQuestionDto(
-            Long examId,
             String examName,
             Timestamp examDate,
             String module,
@@ -49,31 +50,32 @@ public class ExamQuestionDto {
             Timestamp examCreatedDate,
             Timestamp examUpdatedDate,
             Long id,
+            Long examId,
             String studentId,
             String questionType,
-            int total,
-            int correct,
-            int incorrect,
-            int miss,
-            int section,
+            Integer total,
+            Integer correct,
+            Integer incorrect,
+            Integer miss,
+            Integer section,
             Timestamp questionCreatedDate,
             Timestamp questionUpdatedDate
     ) {
-        this.examId = examId;
         this.examName = examName;
         this.examDate = examDate != null ? examDate.toInstant().atOffset(ZoneOffset.UTC) : null;
         this.module = module;
-        this.band = band;
+        this.band = band == null ? 0d : band;
         this.examCreatedDate = examCreatedDate != null ? examCreatedDate.toLocalDateTime() : null;
         this.examUpdatedDate = examUpdatedDate != null ? examUpdatedDate.toLocalDateTime() : null;
         this.id = id;
+        this.examId = examId;
         this.studentId = studentId;
         this.questionType = questionType;
-        this.total = total;
-        this.correct = correct;
-        this.incorrect = incorrect;
-        this.miss = miss;
-        this.section = section;
+        this.total = total == null ? 0 : total;
+        this.correct = correct == null ? 0 : correct;
+        this.incorrect = incorrect == null ? 0 : incorrect;
+        this.miss = miss == null ? 0 : miss;
+        this.section = section == null ? 0 : section;
         this.questionCreatedDate = questionCreatedDate != null ? questionCreatedDate.toLocalDateTime() : null;
         this.questionUpdatedDate = questionUpdatedDate != null ? questionUpdatedDate.toLocalDateTime() : null;
     }

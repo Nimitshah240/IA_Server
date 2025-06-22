@@ -74,6 +74,7 @@ public class StudentController {
     public void insertExam(@RequestBody List<ExamQuestionDto> examQuestionData) {
         try {
             Long examId = examService.insertOrUpdateExam(examQuestionData.getFirst()).getId();
+            System.out.println(examId);
             for (ExamQuestionDto dto : examQuestionData) {
                 dto.setExamId(examId);
                 questionService.insertOrUpdateQuestion(dto);

@@ -16,7 +16,6 @@ public interface ExamRepository extends JpaRepository<Exam, Long> {
 
     @Query(value = """
             SELECT 
-                e.id AS exam_id,
                 e.exam_name,
                 e.exam_date,
                 e.module,
@@ -25,6 +24,7 @@ public interface ExamRepository extends JpaRepository<Exam, Long> {
                 e.updated_date AS exam_updated_date,
             
                 q.id,
+                q.exam_id,
                 q.student_id,
                 q.question_type,
                 q.total,
@@ -36,7 +36,7 @@ public interface ExamRepository extends JpaRepository<Exam, Long> {
                 q.updated_date AS question_updated_date
             
             FROM exam e
-            LEFT JOIN question q ON q.exam_id = exam_id
+            LEFT JOIN question q ON q.exam_id = e.id
             WHERE e.student_id = :studentId
             AND e.module IN (:modules)
             ORDER BY e.exam_date ASC
