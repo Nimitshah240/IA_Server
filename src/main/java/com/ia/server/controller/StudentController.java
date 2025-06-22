@@ -33,7 +33,7 @@ public class StudentController {
     @Transactional
     public List<Student> getStudent(@RequestParam String user_id) {
         Optional<Student> optStudent = studentService.findOneById(user_id);
-        return List.of(optStudent.get());
+        return optStudent.map(List::of).orElse(null);
     }
 
     @PostMapping("/updateStudent")

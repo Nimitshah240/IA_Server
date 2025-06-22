@@ -7,6 +7,7 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.Query;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.transaction.Transactional;
 import org.hibernate.query.NativeQuery;
 import org.hibernate.transform.AliasToEntityMapResultTransformer;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,6 +39,7 @@ public class StudentService {
         }
     }
 
+    @Transactional
     public Student saveOrUpdateStudent(HttpServletRequest request, Student student) {
         try {
             String ipAddress = request.getHeader("X-Forwarded-For");
@@ -49,7 +51,7 @@ public class StudentService {
                 Map<String, Object> mapOfIP = restTemplate.getForObject(url, Map.class);
                 student.setLocation(mapOfIP.get("city") + "," + mapOfIP.get("region"));
             }
-
+            System.out.println(student);
             return studentRepo.save(student);
         } catch (Exception e) {
             System.out.println("saveOrUpdateStudent : " + e);
