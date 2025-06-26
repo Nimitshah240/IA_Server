@@ -1,18 +1,16 @@
-package com.ia.server.repository;
+package com.ia.server.base.repository;
 
-import com.ia.server.DTO.AllStudentDTO;
-import com.ia.server.DTO.ExamQuestionDto;
-import com.ia.server.model.Student;
+import com.ia.server.base.dto.BaseAllStudentDto;
+import com.ia.server.base.model.Student;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface StudentRepository extends JpaRepository<Student, String> {
+public interface BaseStudentRepository extends JpaRepository<Student, String> {
 
 
     @Override
@@ -36,5 +34,5 @@ public interface StudentRepository extends JpaRepository<Student, String> {
             COUNT(CASE WHEN exam.module = 'reading' THEN 1 END) AS reading_count FROM student
             LEFT JOIN exam ON student.id = exam.student_id GROUP BY student.id
             """, nativeQuery = true)
-    List<AllStudentDTO> getAllStudentData();
+    List<BaseAllStudentDto> getAllStudentData();
 }

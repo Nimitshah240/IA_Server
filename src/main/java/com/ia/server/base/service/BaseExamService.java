@@ -1,8 +1,8 @@
-package com.ia.server.service;
+package com.ia.server.base.service;
 
-import com.ia.server.DTO.ExamQuestionDto;
-import com.ia.server.model.Exam;
-import com.ia.server.repository.ExamRepository;
+import com.ia.server.base.dto.BaseExamQuestionDto;
+import com.ia.server.base.model.Exam;
+import com.ia.server.base.repository.BaseExamRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -11,12 +11,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-public class ExamService {
+public class BaseExamService {
 
     @Autowired
-    private ExamRepository examRepository;
+    private BaseExamRepository baseExamRepository;
 
-    public List<ExamQuestionDto> getExamData(String studentId, String module) {
+    public List<BaseExamQuestionDto> getExamData(String studentId, String module) {
         try {
             List<String> moduleList = new ArrayList<String>();
             if (module == null) {
@@ -25,7 +25,7 @@ public class ExamService {
             } else {
                 moduleList.add(module);
             }
-            return examRepository.getExamData(studentId, moduleList);
+            return baseExamRepository.getExamData(studentId, moduleList);
         } catch (Exception e) {
             System.out.println("getExamData : " + e);
             throw new RuntimeException(e);
@@ -33,10 +33,9 @@ public class ExamService {
 
     }
 
-    public Long deleteExam(Long exam_id) {
+    public void deleteById(Long exam_id) {
         try {
-            examRepository.deleteById(exam_id);
-            return exam_id;
+            baseExamRepository.deleteById(exam_id);
         } catch (Exception e) {
             System.out.println("deleteExam : " + e);
             throw new RuntimeException(e);
@@ -44,7 +43,7 @@ public class ExamService {
     }
 
     @Transactional
-    public Exam insertOrUpdateExam(ExamQuestionDto examQuestionDto) {
+    public Exam insertOrUpdateExam(BaseExamQuestionDto examQuestionDto) {
         try {
             Exam e = new Exam();
             e.setId(examQuestionDto.getExamId());
@@ -55,7 +54,7 @@ public class ExamService {
             e.setCreatedDate(examQuestionDto.getExamCreatedDate());
             e.setUpdatedDate(examQuestionDto.getExamUpdatedDate());
             e.setStudentId(examQuestionDto.getStudentId());
-            return examRepository.save(e);
+            return baseExamRepository.save(e);
         } catch (Exception e) {
             System.out.println("insertOrUpdateExam : " + e);
             throw new RuntimeException(e);

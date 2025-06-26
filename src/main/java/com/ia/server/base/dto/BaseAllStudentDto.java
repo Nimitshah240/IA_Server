@@ -1,4 +1,4 @@
-package com.ia.server.DTO;
+package com.ia.server.base.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,7 +9,7 @@ import java.util.Date;
 @Getter
 @Setter
 @AllArgsConstructor
-public class AllStudentDTO {
+public class BaseAllStudentDto {
 
     private String id;
 

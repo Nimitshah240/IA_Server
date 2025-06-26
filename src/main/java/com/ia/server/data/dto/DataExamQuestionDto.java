@@ -1,12 +1,8 @@
-package com.ia.server.DTO;
+package com.ia.server.data.dto;
 
-import jakarta.persistence.Column;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NonNull;
 import lombok.Setter;
 
 import java.sql.Timestamp;
@@ -17,7 +13,7 @@ import java.time.ZoneOffset;
 @Getter
 @Setter
 //@AllArgsConstructor
-public class ExamQuestionDto {
+public class DataExamQuestionDto {
 
     private String examName;
     private OffsetDateTime examDate;
@@ -42,7 +38,7 @@ public class ExamQuestionDto {
     private LocalDateTime questionUpdatedDate;
 
 
-    public ExamQuestionDto(
+    public DataExamQuestionDto(
             String examName,
             Timestamp examDate,
             String module,

@@ -1,18 +1,14 @@
-package com.ia.server.repository;
+package com.ia.server.data.repository;
 
-import com.ia.server.DTO.ExamQuestionDto;
-import com.ia.server.DTO.InsertExamQuestionDTO;
-import com.ia.server.model.Question;
+import com.ia.server.base.dto.BaseExamQuestionDto;
+import com.ia.server.base.repository.BaseQuestionRepository;
 import jakarta.transaction.Transactional;
-import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface QuestionRepository extends JpaRepository<Question, Long> {
-
-    void deleteByExamId(Long examId);
+public interface DataQuestionRepository extends BaseQuestionRepository {
 
     @Modifying
     @Transactional
@@ -31,5 +27,5 @@ public interface QuestionRepository extends JpaRepository<Question, Long> {
                     section = VALUES(section),
                     updated_date = VALUES(updated_date)
             """, nativeQuery = true)
-    void insertOrUpdateQuestion(ExamQuestionDto dto);
+    void insertOrUpdateQuestion(BaseExamQuestionDto dto);
 }
