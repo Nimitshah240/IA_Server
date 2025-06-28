@@ -35,8 +35,13 @@ public class StudentController {
     
     @PostMapping
     @Transactional
-    public void updateStudentInfo(HttpServletRequest request, @RequestBody Student student) {
-        studentService.saveOrUpdateStudent(request, student);
+    public ResponseEntity<Student> updateStudentInfo(HttpServletRequest request, @RequestBody Student student) {
+        try {
+            studentService.saveOrUpdateStudent(request, student);
+            return ResponseEntity.ok(student);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
 }

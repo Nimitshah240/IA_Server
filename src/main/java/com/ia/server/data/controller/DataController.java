@@ -42,13 +42,14 @@ public class DataController {
     }
 
     @PostMapping
-    public void insertExam(@RequestBody List<BaseExamQuestionDto> examQuestionData) {
+    public List<BaseExamQuestionDto> insertExam(@RequestBody List<BaseExamQuestionDto> examQuestionData) {
         try {
             Long examId = dataExamService.insertOrUpdateExam(examQuestionData.getFirst()).getId();
             for (BaseExamQuestionDto dto : examQuestionData) {
                 dto.setExamId(examId);
                 dataQuestionService.insertOrUpdateQuestion(dto);
             }
+            return examQuestionData;
         } catch (Exception e) {
             System.out.println(e);
             throw new RuntimeException(e);
