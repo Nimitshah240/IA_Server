@@ -3,10 +3,11 @@ package com.ia.server.student.controller;
 import com.ia.server.base.model.Student;
 import com.ia.server.student.service.StudentService;
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Collections;
@@ -23,7 +24,7 @@ public class StudentController {
 
 
     @GetMapping
-    @Transactional
+    @Transactional(readOnly = true, timeout = 3)
     public ResponseEntity<?> getStudent(@RequestParam String user_id) {
         Optional<Student> optStudent = studentService.findById(user_id);
         if (optStudent.isPresent()) {
@@ -32,9 +33,9 @@ public class StudentController {
             return new ResponseEntity<>(Collections.emptyList(), HttpStatus.NO_CONTENT); //204
         }
     }
-    
+
     @PostMapping
-    @Transactional
+    @Transactional(timeout = 3, isolation = Isolation.SERIALIZABLE)
     public ResponseEntity<Student> updateStudentInfo(HttpServletRequest request, @RequestBody Student student) {
         try {
             studentService.saveOrUpdateStudent(request, student);

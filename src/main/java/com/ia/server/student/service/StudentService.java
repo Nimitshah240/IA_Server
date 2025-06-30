@@ -27,8 +27,6 @@ public class StudentService extends BaseStudentService {
         try {
             String ipAddress = request.getHeader("X-Forwarded-For");
 
-//            ipAddress = (ipAddress != null && !ipAddress.isEmpty() ? ipAddress.split(",")[0] : request.getRemoteAddr());
-
             if (ipAddress != (null)) {
                 RestTemplate restTemplate = restTemplateBuilder.build();
                 String url = "https://ipinfo.io/" + ipAddress + "/json/";
