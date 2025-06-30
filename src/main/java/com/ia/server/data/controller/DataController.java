@@ -26,14 +26,14 @@ public class DataController {
     private DataExamService dataExamService;
 
     @GetMapping
-    @Transactional(readOnly = true, timeout = 3)
+    @Transactional(readOnly = true)
     @Cacheable(value = {"data", "dashboard"}, key = "#user_id + '_' + #module")
     public List<BaseExamQuestionDto> getExamData(@RequestParam String user_id, @RequestParam(required = false) String module) {
         return dataExamService.getExamData(user_id, module);
     }
 
     @DeleteMapping("/deleteQuestion")
-    @Transactional(timeout = 3)
+    @Transactional()
     @CacheEvict(value = {"data", "dashboard"}, key = "#dataDeleteQuestionDto.studentId + '_' + #dataDeleteQuestionDto.module")
     public Long deleteQuestion(@RequestBody DataDeleteQuestionDto dataDeleteQuestionDto) {
         dataQuestionService.deleteById(dataDeleteQuestionDto.getQuestionId());
@@ -41,7 +41,7 @@ public class DataController {
     }
 
     @DeleteMapping("/deleteExam")
-    @Transactional(timeout = 3)
+    @Transactional()
     @CacheEvict(value = {"data", "dashboard"}, key = "#dataDeleteExamDto.studentId + '_' + #dataDeleteExamDto.module")
     public Long deleteExam(@RequestBody DataDeleteExamDto dataDeleteExamDto) {
         dataExamService.deleteById(dataDeleteExamDto.getExamId());
@@ -50,7 +50,7 @@ public class DataController {
     }
 
     @PostMapping
-    @Transactional(timeout = 3, isolation = Isolation.SERIALIZABLE)
+    @Transactional(isolation = Isolation.SERIALIZABLE)
     @CacheEvict(value = {"data", "dashboard"}, key = "#examQuestionData[0].studentId + '_' + #examQuestionData[0].module")
     public List<BaseExamQuestionDto> insertExam(@RequestBody List<BaseExamQuestionDto> examQuestionData) {
         try {
@@ -67,7 +67,7 @@ public class DataController {
     }
 
     @PutMapping
-    @Transactional(timeout = 3)
+    @Transactional()
     public void updateExam(@RequestBody List<BaseExamQuestionDto> examQuestionData) {
         try {
             Long examId = dataExamService.insertOrUpdateExam(examQuestionData.getFirst()).getId();

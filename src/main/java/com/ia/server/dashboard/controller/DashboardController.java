@@ -18,7 +18,7 @@ public class DashboardController {
     private DashboardExamService dashboardExamService;
 
     @GetMapping
-    @Transactional(readOnly = true, timeout = 3)
+    @Transactional(readOnly = true)
     @Cacheable(value = "dashboard", key = "#user_id + '_' + #module")
     public List<BaseExamQuestionDto> getExamData(@RequestParam String user_id, @RequestParam(required = false) String module) {
         try {

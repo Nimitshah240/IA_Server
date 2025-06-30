@@ -10,7 +10,7 @@ import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Collections;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -24,18 +24,18 @@ public class StudentController {
 
 
     @GetMapping
-    @Transactional(readOnly = true, timeout = 3)
+    @Transactional(readOnly = true)
     public ResponseEntity<?> getStudent(@RequestParam String user_id) {
         Optional<Student> optStudent = studentService.findById(user_id);
         if (optStudent.isPresent()) {
             return new ResponseEntity<>(List.of(optStudent.get()), HttpStatus.OK); // 200
         } else {
-            return new ResponseEntity<>(Collections.emptyList(), HttpStatus.NO_CONTENT); //204
+            return ResponseEntity.ok(new ArrayList<Student>()); //200
         }
     }
 
     @PostMapping
-    @Transactional(timeout = 3, isolation = Isolation.SERIALIZABLE)
+    @Transactional(isolation = Isolation.SERIALIZABLE)
     public ResponseEntity<Student> updateStudentInfo(HttpServletRequest request, @RequestBody Student student) {
         try {
             studentService.saveOrUpdateStudent(request, student);

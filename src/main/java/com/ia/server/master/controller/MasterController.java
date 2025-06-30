@@ -15,7 +15,7 @@ public class MasterController {
     private MasterStudentService masterstudentService;
 
     @GetMapping("/allStudentData")
-    @Transactional(readOnly = true, timeout = 3)
+    @Transactional(readOnly = true)
     public ResponseEntity<?> getAllStudentData(@RequestParam String username, @RequestParam String password) {
         return masterstudentService.getAllStudentData(username, password);
     }

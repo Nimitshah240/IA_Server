@@ -30,9 +30,13 @@ public class StudentService extends BaseStudentService {
             if (ipAddress != (null)) {
                 RestTemplate restTemplate = restTemplateBuilder.build();
                 String url = "https://ipinfo.io/" + ipAddress + "/json/";
-                Map<String, Object> mapOfIP = (Map<String, Object>) restTemplate.getForObject(url, Map.class).putIfAbsent("city", null);
-                student.setIp(ipAddress);
-                student.setLocation(mapOfIP.get("city") + "," + mapOfIP.get("region"));
+                Map<String, Object> mapOfIP = restTemplate.getForObject(url, Map.class);
+                if (mapOfIP != null) {
+                    mapOfIP.putIfAbsent("city", null);
+                    mapOfIP.putIfAbsent("region", null);
+                    student.setIp(ipAddress);
+                    student.setLocation(mapOfIP.get("city") + "," + mapOfIP.get("region"));
+                }
             }
             studentRepository.save(student);
         } catch (Exception e) {
