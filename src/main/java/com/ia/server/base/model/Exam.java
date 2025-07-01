@@ -34,14 +34,14 @@ public class Exam {
     private Double band;
 
     @Column(updatable = false)
-    private LocalDateTime  createdDate;
+    private LocalDateTime createdDate;
 
     @Column
-    private LocalDateTime  updatedDate;
+    private LocalDateTime updatedDate;
 
     @PrePersist
     protected void onCreate() {
         this.createdDate = LocalDateTime.now();
-        this.updatedDate =LocalDateTime.now();
+        this.updatedDate = LocalDateTime.now();
     }
 }
