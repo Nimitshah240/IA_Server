@@ -5,7 +5,7 @@ FROM maven:3.9.6-eclipse-temurin-21 AS build
 WORKDIR /ia_server
 
 # Copy the contents of the ia_server project
-COPY ia_server /ia_server
+COPY . .
 
 # Package the application without running tests
 RUN mvn clean package -DskipTests
