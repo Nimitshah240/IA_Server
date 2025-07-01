@@ -1,10 +1,10 @@
-package com.ia.server.model;
+package com.ia.server.base.model;
 
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -18,7 +18,7 @@ public class Question {
     private Long id;
 
     @Column
-    private Long studentId;
+    private String studentId;
 
     @Column
     private Long examId;
@@ -42,14 +42,14 @@ public class Question {
     private Integer section;
 
     @Column(updatable = false)
-    private Date createdDate;
+    private LocalDateTime createdDate;
 
     @Column
-    private Date updatedDate;
+    private LocalDateTime updatedDate;
 
     @PrePersist
     protected void onCreate() {
-        this.createdDate = new Date();
-        this.updatedDate = new Date();
+        this.createdDate = LocalDateTime.now();
+        this.updatedDate = LocalDateTime.now();
     }
 }

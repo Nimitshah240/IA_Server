@@ -1,11 +1,11 @@
-package com.ia.server.model;
+package com.ia.server.base.model;
 
 import jakarta.annotation.Nonnull;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 @Entity
 @Getter
@@ -15,8 +15,7 @@ public class Student {
 
     @Id
     @Column(unique = true)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    private Long id;
+    private String id;
 
     @Column
     @Nonnull
@@ -35,11 +34,11 @@ public class Student {
     @Column
     private String ip;
 
-    @Column
-    private Date loginDate;
+    @Column(updatable = false)
+    private LocalDateTime loginDate;
 
     @Column
-    private Long institutionId;
+    private String institutionId;
 
     @Column
     private Boolean subscribed;
@@ -55,5 +54,14 @@ public class Student {
 
     @Transient
     private Boolean newStudent;
+
+    @Column
+    private Boolean privacy;
+
+
+    @PrePersist
+    protected void onCreate() {
+        this.loginDate = LocalDateTime.now();
+    }
 
 }
